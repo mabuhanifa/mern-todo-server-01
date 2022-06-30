@@ -33,6 +33,28 @@ async function run() {
       const completed = await cursor.toArray();
       res.send(completed);
     });
+
+    app.post("/todo", async (req, res) => {
+      const newTodo = req.body;
+      console.log("adding new Item", newTodo);
+      const result = await todoList.insertOne(newTodo);
+      res.send(result);
+    });
+
+    app.post("/completed", async (req, res) => {
+      const newCompleted = req.body;
+      console.log("adding new Item", newCompleted);
+      const result = await completedList.insertOne(newCompleted);
+      res.send(result);
+    });
+
+    app.delete("/todo/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      console.log("deleting Item", id);
+      const result = await todoList.deleteOne(query);
+      res.send(result);
+    });
   } catch (e) {
     console.error(e);
   } finally {
