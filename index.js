@@ -27,12 +27,12 @@ async function run() {
       res.send(todo);
     });
 
-    app.get('/todo/:id', async(req, res) =>{
+    app.get("/todo/:id", async (req, res) => {
       const id = req.params.id;
-      const query = {_id: ObjectId(id)};
+      const query = { _id: ObjectId(id) };
       const result = await todoList.findOne(query);
       res.send(result);
-  });
+    });
 
     app.get("/completed", async (req, res) => {
       const query = {};
@@ -60,6 +60,25 @@ async function run() {
       const query = { _id: ObjectId(id) };
       console.log("deleting Item", id);
       const result = await todoList.deleteOne(query);
+      res.send(result);
+    });
+
+    app.put("/todo/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedTodo = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          todo: updatedTodo.todo,
+          desc: updatedTodo.desc,
+        },
+      };
+      const result = await todoList.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
       res.send(result);
     });
   } catch (e) {
