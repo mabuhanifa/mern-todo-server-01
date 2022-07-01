@@ -27,6 +27,13 @@ async function run() {
       res.send(todo);
     });
 
+    app.get('/todo/:id', async(req, res) =>{
+      const id = req.params.id;
+      const query = {_id: ObjectId(id)};
+      const result = await todoList.findOne(query);
+      res.send(result);
+  });
+
     app.get("/completed", async (req, res) => {
       const query = {};
       const cursor = completedList.find(query);
