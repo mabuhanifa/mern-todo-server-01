@@ -14,6 +14,7 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
+
 async function run() {
   try {
     await client.connect();
@@ -74,11 +75,7 @@ async function run() {
           desc: updatedTodo.desc,
         },
       };
-      const result = await todoList.updateOne(
-        filter,
-        updatedDoc,
-        options
-      );
+      const result = await todoList.updateOne(filter, updatedDoc, options);
       res.send(result);
     });
   } catch (e) {
